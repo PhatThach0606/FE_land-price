@@ -1,7 +1,50 @@
 "use client";
 import { FcGoogle } from "react-icons/fc";
+import { useState } from "react";
+import { useAuth } from "@/hooks/auth/useAuth";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import Link from "next/link";
+
 export default function Login() {
+  const router = useRouter();
+  const [account, setAccount] = useState({ email: "", password: "" });
+  const { login } = useAuth();
+
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!account.email || !account.password) {
+      toast.error("Vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await login(account.email, account.password);
+
+      const accessToken = res?.data?.accessToken || res?.accessToken;
+      const refreshToken = res?.data?.refreshToken || res?.refreshToken;
+      const role = res?.data?.role || res?.role;
+      localStorage.setItem("role", role);
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken);
+      }
+
+      if (refreshToken) {
+        localStorage.setItem("refreshToken", refreshToken);
+      }
+
+      toast.success("Đăng nhập thành cônng");
+
+      router.push(res.data.role === "ADMIN" ? "/selection" : "/home");
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message || "Đăng nhập thất bại");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="w-full">
       {/* Title */}
@@ -13,12 +56,12 @@ export default function Login() {
       <div className="mb-6">
         <label
           htmlFor="account"
-          className="block text-sm dark:text-gray-300 mb-2  cursor-pointer"
+          className="block text-sm dark:text-white/90 mb-2  cursor-pointer"
         >
           Tài khoản
         </label>
 
-        <div className="flex items-center border-b border-gray-300 focus-within:border-blue-500 transition">
+        <div className="flex items-center border-b border-gray-300 focus-within:border-blue-500 transition outline-none">
           <span className="text-gray-400 mr-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -37,9 +80,17 @@ export default function Login() {
           </span>
           <input
             id="account"
-            type="text"
+            type="email"
+            autoComplete="user"
+            value={account.email}
+            onChange={(e) => {
+              setAccount({
+                ...account,
+                email: e.target.value,
+              });
+            }}
             placeholder="Nhập tài khoản"
-            className="w-full py-2 outline-none dark:text-white text-gray-500 bg-transparent"
+            className="w-full py-2 outline-none dark:text-white/90  bg-transparent border-none"
           />
         </div>
       </div>
@@ -48,7 +99,7 @@ export default function Login() {
       <div className="mb-2">
         <label
           htmlFor="password"
-          className="block text-sm dark:text-gray-300 mb-2  cursor-pointer"
+          className="block text-sm dark:text-white/90 mb-2  cursor-pointer"
         >
           Mật khẩu
         </label>
@@ -73,8 +124,16 @@ export default function Login() {
           <input
             id="password"
             type="password"
+            autoComplete="current-password"
+            value={account.password}
+            onChange={(e) => {
+              setAccount({
+                ...account,
+                password: e.target.value,
+              });
+            }}
             placeholder="Nhập mật khâu"
-            className="w-full py-2 outline-none text-gray-500 dark:text-white bg-transparent"
+            className="w-full py-2 outline-none  dark:text-white/90 bg-transparent border-none"
           />
         </div>
       </div>
@@ -85,6 +144,8 @@ export default function Login() {
 
       {/* Login Button */}
       <button
+        onClick={handleLogin}
+        disabled={loading}
         className="
         w-full py-3 rounded-full text-white font-semibold
         bg-linear-to-r from-blue-500 to-cyan-400
@@ -94,7 +155,8 @@ export default function Login() {
         cursor-pointer
         "
       >
-        ĐĂNG NHẬP
+        {" "}
+        {loading ? "Đang đăng nhập..." : "ĐĂNG NHẬP"}
       </button>
 
       {/* Divider */}
@@ -110,15 +172,18 @@ export default function Login() {
           className="
           flex items-center gap-3
           px-6 py-2 rounded-full
-          border border-gray-300
-          hover:bg-gray-50
-          dark:hover:bg-gray-200
+          border 
+        
+          dark:hover:text-white/50
+          dark:hover:bg-white/30
+       
           transition-all duration-200
           cursor-pointer
+          dark:border-white/90
           "
         >
           <FcGoogle size={22} />
-          <span className="text-sm font-medium text-gray-700 ">
+          <span className="text-sm font-medium dark:text-white/90 ">
             Đăng nhập với Google
           </span>
         </button>

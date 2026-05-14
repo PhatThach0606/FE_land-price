@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { GeoJSON } from "react-leaflet";
 import { getTraffic } from "@/features/client/map/get.Traffic";
+import { onEachFeature } from "@/components/MapClickHandler/MapClickHandler";
 import React from "react";
 
 function Traffic() {
@@ -13,13 +14,24 @@ function Traffic() {
   }, []);
   const geoStyle = useMemo(
     () => ({
-      weight: 2,
-      fillColor: "orange",
-      fillOpacity: 0.5,
+      color: "#F6C453",
+      weight: 2.5,
+      fillColor: "#F6C453",
+      fillOpacity: 0.4,
     }),
     [],
   );
-  return <>{data && <GeoJSON data={data} style={geoStyle} />}</>;
+  return (
+    <>
+      {data && (
+        <GeoJSON
+          data={data.data}
+          style={geoStyle}
+          onEachFeature={onEachFeature}
+        />
+      )}
+    </>
+  );
 }
 
 export default React.memo(Traffic);

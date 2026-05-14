@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import Provider from "@/components/provider/toast/Provider";
-
+import { Toaster } from "react-hot-toast";
 // import { LOGO } from "@/constant/app.constant";
 
 const geistSans = Geist({
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "Phường Bến Thành",
   description: "Phường Bến Thành",
   icons: {
-    // icon: "",
+    icon: "/logo.png",
   },
 };
 
@@ -34,10 +34,17 @@ export default async function RootLayout({ children }: Props) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
       >
-        <Provider>{children}</Provider>
+        <Provider>
+          {children}
+          <Toaster position="top-center" />
+        </Provider>
         <link
           href="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css"
           rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
 
         {/* Google Login Script */}

@@ -1,159 +1,182 @@
+"use client";
 import Link from "next/link";
-export default function Navbar() {
+import { useEffect, useRef, useState } from "react";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import { getProfile } from "@/features/user/profile/getProfile";
+import { useRouter } from "next/navigation";
+
+import {
+  UserIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
+import { useUserStore } from "@/store/user";
+import { useTheme } from "@/hooks/theme/useTheme";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+export default function Navbar({ collapsed, setCollapsed }: any) {
+  const router = useRouter();
+  const { user, setUser } = useUserStore();
+  const [open, setOpen] = useState(false);
+  const { dark, toggleTheme } = useTheme();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const init = async () => {
+      const data = await getProfile();
+      setUser(data);
+    };
+    init();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    router.push("/login");
+  };
+
   return (
-    <nav className="bg-neutral-primary h-16   w-full z-20 top-0 start-0 border-b border-default">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        {/* <a
-          href="https://flowbite.com/"
-          className="flex items-center space-x-3 rtl:space-x-reverse "
+    <nav
+      className="
+        h-20
+      
+
+        bg-white/80 dark:bg-[#0F172B]
+        backdrop-blur-md
+        border-b border-slate-200 dark:border-slate-800
+        shadow-sm
+        flex items-center justify-between px-6
+        sticky top-0 z-40
+      "
+    >
+      {/* LEFT */}
+      <div className="flex items-center gap-3 w-full max-w-md">
+        {/* TOGGLE SIDEBAR */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="
+        p-2 rounded-lg
+        hover:bg-slate-200 dark:hover:bg-slate-700
+        transition
+      "
         >
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-7"
-            alt="Flowbite Logo"
+          <Bars3Icon className="w-5 h-5 text-slate-700 dark:text-slate-200" />
+        </button>
+
+        {/* SEARCH */}
+        <div className="w-full relative">
+          <input
+            type="text"
+            placeholder="Tìm kiếm thửa đất, địa chỉ..."
+            className="
+          w-full px-4 py-2 pl-10
+          border border-slate-200 dark:border-slate-700
+          rounded-full text-sm
+          bg-slate-50 dark:bg-slate-800
+          text-slate-400
+          focus:outline-none focus:ring-2 focus:ring-sky-400
+        "
           />
-          <span className="self-center text-xl text-heading font-semibold whitespace-nowrap">
-            Flowbite
-          </span>
-        </a> */}
-        <div className="flex items-center md:order-2">
-          <button
-            type="button"
-            data-collapse-toggle="navbar-search"
-            aria-controls="navbar-search"
-            aria-expanded="false"
-            className="flex items-center justify-center md:hidden text-body hover:text-heading bg-transparent box-border border border-transparent hover:bg-neutral-secondary-medium focus:ring-2 focus:ring-neutral-tertiary font-medium leading-5 rounded-base text-sm w-10 h-10 focus:outline-none"
-          >
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth={2}
-                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-              />
-            </svg>
-            <span className="sr-only">Search</span>
-          </button>
-          <label htmlFor="input-group-1" className="sr-only">
-            Your Email
-          </label>
-          <div className="relative hidden md:block">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-body"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth={2}
-                  d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="text"
-              id="input-group-1"
-              className="block w-full ps-9 pe-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand px-2.5 py-2 shadow-xs placeholder:text-body"
-              placeholder="Search"
-            />
-          </div>
-          <button
-            data-collapse-toggle="navbar-search"
-            type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
-            aria-controls="navbar-search"
-            aria-expanded="false"
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth={2}
-                d="M5 7h14M5 12h14M5 17h14"
-              />
-            </svg>
-          </button>
+          <div className="absolute left-3 top-2.5 text-slate-400">🔍</div>
         </div>
-        <div
-          className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-          id="navbar-search"
+      </div>
+
+      {/* RIGHT giữ nguyên */}
+
+      {/* RIGHT */}
+      <div className="flex items-center gap-3 ml-4">
+        {/* 🌗 DARK MODE TOGGLE */}
+        <button
+          onClick={toggleTheme}
+          className="
+    p-2 rounded-full
+    bg-slate-100 dark:bg-slate-800
+    cursor-pointer
+    hover:bg-slate-200 dark:hover:bg-slate-700
+    transition
+  "
         >
-          <div className="relative mt-3 md:hidden">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-body"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                fill="none"
-                viewBox="0 0 24 24"
+          {dark ? (
+            <SunIcon className="w-5 h-5 text-slate-700" />
+          ) : (
+            <MoonIcon className="w-5 h-5 text-slate-700" />
+          )}
+        </button>
+
+        {/* USER NAME */}
+        <div className="text-sm text-slate-600 dark:text-slate-300 hidden sm:block">
+          <span className="font-semibold ml-1 text-slate-700 dark:text-slate-300">
+            {user?.full_name || "User"}
+          </span>
+        </div>
+
+        {/* AVATAR */}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setOpen(!open)}
+            className="w-9 h-9 rounded-full overflow-hidden shadow hover:scale-105 transition"
+          >
+            {user?.avatar ? (
+              <img src={user.avatar} className="w-full h-full object-cover" />
+            ) : (
+              <div
+                className="
+                w-full h-full
+                bg-gradient-to-r from-blue-500 to-cyan-500
+                flex items-center justify-center
+                text-white text-sm font-semibold
+              "
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth={2}
-                  d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                />
-              </svg>
+                {user?.full_name?.charAt(0) || "U"}
+              </div>
+            )}
+          </button>
+
+          {/* DROPDOWN */}
+          {open && (
+            <div
+              className="
+              absolute right-0 z-50 mt-2 w-40
+              bg-white dark:bg-slate-800
+text-slate-700 dark:text-slate-400
+              rounded-xl shadow-lg overflow-hidden
+            "
+            >
+              <Link
+                href="/profile"
+                onClick={() => setOpen(false)}
+                className="
+                  flex items-center gap-2 px-4 py-2 text-sm
+                  hover:bg-green-100 dark:hover:bg-green-100
+                "
+              >
+                <UserIcon className="w-4 h-4" />
+                Hồ sơ cá nhân
+              </Link>
+
+              <button
+                onClick={handleLogout}
+                className="
+                  w-full flex items-center gap-2 px-4 py-2 text-sm
+                  text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20
+                "
+              >
+                <ArrowRightOnRectangleIcon className="w-4 h-4" />
+                Đăng xuất
+              </button>
             </div>
-            <input
-              type="text"
-              id="input-group-1"
-              className="block w-full ps-9 pe-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand px-2.5 py-2 shadow-xs placeholder:text-body"
-              placeholder="Search"
-            />
-          </div>
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-default rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary">
-            <li>
-              <Link
-                href="home"
-                className="block py-2 px-3 text-heading bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0"
-                aria-current="page"
-              >
-                Trang chủ
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="map"
-                className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
-              >
-                Bản đồ
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="service"
-                className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
-              >
-                Dịch vụ
-              </Link>
-            </li>
-          </ul>
+          )}
         </div>
       </div>
     </nav>

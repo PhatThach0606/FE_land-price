@@ -1,8 +1,8 @@
-import axios from "axios";
+import { api } from "@/features/api";
 
 export const getTraffic = async () => {
   try {
-    const res = await axios.get("http://localhost:6612/api/map/traffic");
+    const res = await api.get("/map/traffic");
     return res.data;
   } catch (error: any) {
     console.error("API error:", error);

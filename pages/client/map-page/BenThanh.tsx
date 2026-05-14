@@ -6,28 +6,32 @@ import React from "react";
 import { onEachFeature } from "@/components/MapClickHandler/MapClickHandler";
 function BenThanh() {
   const [data, setData] = useState<any>(null);
+
   useEffect(() => {
     getMap()
       .then(setData)
       .catch((err) => console.error(err));
   }, []);
-
   const geoStyle = useMemo(
     () => ({
-      color: "black",
-      weight: 2,
-      fillColor: "green",
-      fillOpacity: 0.5,
+      color: "#1A1A1B",
+      fillColor: "#F4A7B9",
+      weight: 0.2,
+      fillOpacity: 0.25,
     }),
     [],
   );
-
   if (!data) return null;
 
   return (
     <>
       {data && (
-        <GeoJSON data={data} style={geoStyle} onEachFeature={onEachFeature} />
+        <GeoJSON
+          key={data ? "loaded" : "loading"}
+          data={data.data}
+          style={geoStyle}
+          onEachFeature={onEachFeature}
+        />
       )}
     </>
   );

@@ -2,8 +2,40 @@
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
 @import "animate.css";
-@custom-variant dark (&:where(.dark, .dark *));
 @import "leaflet/dist/leaflet.css";
+
+/* =========================
+   DARK MODE (ONLY ONCE)
+========================= */
+@custom-variant dark (&:where(.dark, .dark *));
+/* =========================
+   BASE THEME
+========================= */
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+
+/* =========================
+   BODY BACKGROUND
+========================= */
+
+body {
+  background: #ffffff;
+}
+
+.dark body {
+  background: #0a0a0a;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
 
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
@@ -17,6 +49,21 @@
   100% { transform: translate(0%, 0%) scale(1); }
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out;
+}
+
 .animate-gradient {
   animation: gradientMove 15s ease-in-out infinite;
 }
@@ -25,20 +72,49 @@
   animation: glowMove 15s ease-in-out infinite;
 }
 
-/* ====  */
+/* =========================
+   INPUT AUTOFILL FIX
+========================= */
 
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+input:-webkit-autofill {
+  -webkit-text-fill-color: black;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+.dark input:-webkit-autofill {
+  -webkit-text-fill-color: white;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+/* =========================
+   ANIMATE IN
+========================= */
+
+.animate-in {
+  animation: fadeZoom 0.15s ease-out;
+}
+
+@keyframes fadeZoom {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================
+   LEAFLET FIX
+========================= */
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
 }

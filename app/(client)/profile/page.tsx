@@ -1,3 +1,8 @@
+import Profile from "@/pages/client/profile/Profile";
 export default function page() {
-  return <div>page</div>;
+  return (
+    <div>
+      <Profile />
+    </div>
+  );
 }

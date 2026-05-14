@@ -1,3 +1,8 @@
+import Dashboard from "@/pages/admin/dashboard/Dashboard";
 export default function page() {
-  return <div>page</div>;
+  return (
+    <div>
+      <Dashboard />
+    </div>
+  );
 }

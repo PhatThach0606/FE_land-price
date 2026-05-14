@@ -15,17 +15,15 @@ function LineString() {
 
   const geoStyle = useMemo(
     () => ({
-      color: "red",
-      weight: 2,
-      fillColor: "green",
-      fillOpacity: 0.5,
+      color: "#1A1A1B",
+      weight: 3,
+      opacity: 0.85,
     }),
     [],
   );
   if (!data) return null;
 
-  return <>{data && <GeoJSON data={data} style={geoStyle} />}</>;
+  return <>{data && <GeoJSON data={data.data} style={geoStyle} />}</>;
 }
 
 export default React.memo(LineString);
-  

@@ -1,28 +1,69 @@
 "use client";
+import { useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import BenThanh from "./BenThanh";
 import Traffic from "./Traffic";
 import LineString from "./LineString";
+import MapControlPanel from "@/components/MapControlPanel/MapControlPanel";
+
+const baseMaps = {
+  google: {
+    url: "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+    attribution: "© Google",
+  },
+  esri: {
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+    attribution: "© Esri",
+  },
+  voyager: {
+    url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+    attribution: "© CARTO",
+  },
+  dark: {
+    url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    attribution: "© CARTO",
+  },
+};
+
 export default function Map() {
-  const titleLayer = {
-    title: "OpenStreetMap",
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  const [baseMap, setBaseMap] = useState("google");
+  const [layers, setLayers] = useState({
+    benThanh: true,
+    traffic: true,
+    lineString: true,
+  });
+
+  const toggleLayer = (key: keyof typeof layers) => {
+    setLayers((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+
   return (
-    <div className="h-full w-full relative">
+    <div className="relative h-screen w-full z-1">
+      <MapControlPanel
+        baseMap={baseMap}
+        setBaseMap={setBaseMap}
+        layers={layers}
+        toggleLayer={toggleLayer}
+      />
+
+      {/* MAP */}
       <MapContainer
-        center={[10.7769, 106.7009]} // TP.HCM
-        zoom={15}
-        maxZoom={19}
-        minZoom={15}
-        style={{ height: "calc(100vh - 64px)", width: "100%", zIndex: 0 }}
+        center={[10.77313, 106.69451]}
+        zoom={16.5}
+        minZoom={16}
+        maxZoom={22}
+        style={{ height: "100%", width: "100%" }}
+        className="z-0"
       >
-        <TileLayer attribution={titleLayer.attribution} url={titleLayer.url} />
-        <BenThanh />
-        <Traffic />
-        <LineString />
+        <TileLayer
+          key={baseMap}
+          url={baseMaps[baseMap as keyof typeof baseMaps].url}
+          attribution={baseMaps[baseMap as keyof typeof baseMaps].attribution}
+        />
+
+        {layers.benThanh && <BenThanh />}
+        {layers.traffic && <Traffic />}
+        {layers.lineString && <LineString />}
       </MapContainer>
     </div>
   );
