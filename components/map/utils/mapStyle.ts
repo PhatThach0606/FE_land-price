@@ -43,3 +43,30 @@ export const roadStyle = {
     fillOpacity: 0.8,
   },
 };
+
+export const getLandColor = (type: string) => {
+  switch (type) {
+    case "ODT":
+      return "#FFA0FF";
+    case "DTT":
+      return "#FFA8A0";
+    case "DVH":
+      return "#FFA8A0";
+    case "TMD":
+      return "#FFA8A0";
+    case "TSC":
+      return "#FFA8A0";
+    case "DKH":
+      return "#FFA8A0";
+    case "DKV":
+      return "#FFA8A0";
+    case "DGD":
+      return "#FFA8A0";
+    case "CQP":
+      return "#FF6450";
+    case "DGT":
+      return "#FFAC30";
+    default:
+      return "FFA0FF";
+  }
+};

@@ -21,7 +21,9 @@ export default function ThuaDatManagement() {
     dien_tich: 0,
   });
 
-  const { keyword, trigger } = useSearchStore();
+  const keyword = useSearchStore((s) => s.keywords.thuaDat);
+
+  const trigger = useSearchStore((s) => s.triggers.thuaDat);
   // ================= FETCH =================
 
   const fetchData = useCallback(async () => {
@@ -30,7 +32,7 @@ export default function ThuaDatManagement() {
       const res = await getAllThuaDat({
         page,
         pageSize: 100,
-        keyword: "",
+        keyword,
       });
 
       setData(res.data);
@@ -70,8 +72,10 @@ export default function ThuaDatManagement() {
 
   // ================= UI =================
   useEffect(() => {
-    setPage(1); // reset page
     fetchData();
+  }, [page, trigger]);
+  useEffect(() => {
+    setPage(1); // reset page
   }, [trigger]);
 
   return (

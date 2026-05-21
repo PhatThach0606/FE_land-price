@@ -30,14 +30,8 @@ type Props = {
 
 export default async function RootLayout({ children }: Props) {
   return (
-    <html suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
-      >
-        <Provider>
-          {children}
-          <Toaster position="top-center" />
-        </Provider>
+    <html lang="vi" suppressHydrationWarning>
+      <head>
         <link
           href="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css"
           rel="stylesheet"
@@ -46,6 +40,21 @@ export default async function RootLayout({ children }: Props) {
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
+      </head>
+      <body
+        className={`
+    ${geistSans.variable}
+    ${geistMono.variable}
+    antialiased
+    bg-gray-50 text-black
+    dark:bg-[#020817] dark:text-white
+    transition-colors duration-300
+  `}
+      >
+        <Provider>
+          {children}
+          <Toaster position="top-center" />
+        </Provider>
 
         {/* Google Login Script */}
         <Script

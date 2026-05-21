@@ -3,20 +3,35 @@ import { create } from "zustand";
 type SearchType = "thuaDat" | "giaoThong" | "user";
 
 interface SearchState {
-  keyword: string;
-
-  trigger: number;
+  keywords: Record<SearchType, string>;
+  triggers: Record<SearchType, number>;
 
   setSearch: (type: SearchType, keyword: string) => void;
 }
 
 export const useSearchStore = create<SearchState>((set) => ({
-  keyword: "",
-  trigger: 0,
+  keywords: {
+    thuaDat: "",
+    giaoThong: "",
+    user: "",
+  },
 
-  setSearch: (keyword) =>
+  triggers: {
+    thuaDat: 0,
+    giaoThong: 0,
+    user: 0,
+  },
+
+  setSearch: (type, keyword) =>
     set((state) => ({
-      keyword,
-      trigger: state.trigger + 1,
+      keywords: {
+        ...state.keywords,
+        [type]: keyword,
+      },
+
+      triggers: {
+        ...state.triggers,
+        [type]: state.triggers[type] + 1,
+      },
     })),
 }));

@@ -2,25 +2,34 @@
 
 import { useEffect, useState } from "react";
 
-export function useTheme() {
+export const useTheme = () => {
   const [dark, setDark] = useState(false);
 
-  // load initial
   useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    const isDark = saved === "dark";
+    const stored = localStorage.getItem("theme");
 
-    setDark(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
+    if (stored === "dark") {
+      document.documentElement.classList.add("dark");
+      setDark(true);
+    } else {
+      document.documentElement.classList.remove("dark");
+      setDark(false);
+    }
   }, []);
 
   const toggleTheme = () => {
-    const next = !dark;
+    const html = document.documentElement;
 
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
+    if (html.classList.contains("dark")) {
+      html.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      setDark(false);
+    } else {
+      html.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setDark(true);
+    }
   };
 
   return { dark, toggleTheme };
-}
+};

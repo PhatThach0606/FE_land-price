@@ -21,7 +21,9 @@ export default function GiaoThongManagement() {
     skc: 0,
   });
 
-  const { keyword, trigger } = useSearchStore();
+  const keyword = useSearchStore((s) => s.keywords.giaoThong);
+
+  const trigger = useSearchStore((s) => s.triggers.giaoThong);
   // ================= FETCH =================
   useEffect(() => {
     fetchData();

@@ -14,7 +14,7 @@ import UserTable from "./../UserTable/UserTable";
 import Pagination from "@/components/Pagination/Pagination";
 import UserForm from "./../UserForm/UserForm";
 import { UserFormData } from "./../schema";
-
+import { useSearchStore } from "@/store/search";
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
@@ -23,11 +23,13 @@ export default function UserManagement() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const keyword = useSearchStore((s) => s.keywords.user);
 
+  const trigger = useSearchStore((s) => s.triggers.user);
   const fetchUsers = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await getAllUser({ page, pageSize: 10, keyword: "" });
+      const res = await getAllUser({ page, pageSize: 10, keyword });
       setUsers(res.data);
       setTotalPage(res.totalPage);
     } catch {
@@ -35,12 +37,14 @@ export default function UserManagement() {
     } finally {
       setIsLoading(false);
     }
-  }, [page]);
+  }, [page, keyword]);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
-
+  useEffect(() => {
+    setPage(1);
+  }, [trigger]);
   const onHandleCreate = async (data: UserFormData) => {
     try {
       await createUser(data);

@@ -48,7 +48,7 @@ export default function Login() {
   return (
     <div className="w-full">
       {/* Title */}
-      <h1 className="text-3xl font-bold text-center dark:text-white/90 mb-8">
+      <h1 className="text-3xl font-bold text-center text-slate-900 dark:text-white/90 mb-8">
         Đăng nhập
       </h1>
 
@@ -56,7 +56,7 @@ export default function Login() {
       <div className="mb-6">
         <label
           htmlFor="account"
-          className="block text-sm dark:text-white/90 mb-2  cursor-pointer"
+          className="block text-sm text-slate-900 dark:text-white/90 mb-2  cursor-pointer"
         >
           Tài khoản
         </label>
@@ -90,7 +90,7 @@ export default function Login() {
               });
             }}
             placeholder="Nhập tài khoản"
-            className="w-full py-2 outline-none dark:text-white/90  bg-transparent border-none"
+            className="w-full py-2 outline-none text-slate-900 dark:text-white/90  bg-transparent border-none"
           />
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function Login() {
       <div className="mb-2">
         <label
           htmlFor="password"
-          className="block text-sm dark:text-white/90 mb-2  cursor-pointer"
+          className="block text-slate-900 text-sm dark:text-white/90 mb-2  cursor-pointer"
         >
           Mật khẩu
         </label>
@@ -133,7 +133,7 @@ export default function Login() {
               });
             }}
             placeholder="Nhập mật khâu"
-            className="w-full py-2 outline-none  dark:text-white/90 bg-transparent border-none"
+            className="w-full py-2 outline-none text-slate-900  dark:text-white/90 bg-transparent border-none"
           />
         </div>
       </div>
@@ -173,7 +173,7 @@ export default function Login() {
           flex items-center gap-3
           px-6 py-2 rounded-full
           border 
-        
+        border-slate-900
           dark:hover:text-white/50
           dark:hover:bg-white/30
        
@@ -183,11 +183,12 @@ export default function Login() {
           "
         >
           <FcGoogle size={22} />
-          <span className="text-sm font-medium dark:text-white/90 ">
+          <span className="text-sm font-medium text-slate-900 dark:text-white/90 ">
             Đăng nhập với Google
           </span>
         </button>
       </div>
+
       <div className="text-center  text-sm text-gray-500 mt-5  hover:text-blue-600 cursor-pointer">
         <Link href="/register">Đăng ký tài khoản</Link>
       </div>

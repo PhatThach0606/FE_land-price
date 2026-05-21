@@ -71,7 +71,7 @@ export default function Register() {
   return (
     <div className="w-full">
       {/* Title */}
-      <h1 className="text-3xl font-bold text-center dark:text-white/90 mb-8">
+      <h1 className="text-3xl font-bold text-slate-900 text-center dark:text-white/90 mb-8">
         Đăng ký
       </h1>
 
@@ -79,7 +79,7 @@ export default function Register() {
       <div className="mb-6">
         <label
           htmlFor="account"
-          className="block text-sm dark:text-gray-300 mb-2 cursor-pointer"
+          className="block text-sm text-slate-900 dark:text-white/90 mb-2 cursor-pointer"
         >
           Họ tên
         </label>
@@ -107,7 +107,7 @@ export default function Register() {
             value={account.full_name}
             onChange={handleChange}
             placeholder="Nhập họ tên"
-            className="w-full py-2 outline-none border-none dark:text-white text-gray-500 bg-transparent"
+            className="w-full py-2 outline-none text-slate-700 border-none dark:text-white/90 bg-transparent"
           />
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function Register() {
       <div className="mb-6">
         <label
           htmlFor="email"
-          className="block text-sm dark:text-gray-300 mb-2 cursor-pointer"
+          className="block text-sm text-slate-900 dark:text-white/90 mb-2 cursor-pointer"
         >
           Email
         </label>
@@ -144,7 +144,7 @@ export default function Register() {
             value={account.email}
             onChange={handleChange}
             placeholder="Nhập email"
-            className="w-full py-2 border-none outline-none dark:text-white text-gray-500 bg-transparent"
+            className="w-full py-2 border-none outline-none text-slate-700  dark:text-white/90 bg-transparent"
           />
         </div>
       </div>
@@ -153,7 +153,7 @@ export default function Register() {
       <div className="mb-6">
         <label
           htmlFor="password"
-          className="block text-sm dark:text-gray-300 mb-2 cursor-pointer"
+          className="block text-sm text-slate-900 dark:text-white/90 mb-2 cursor-pointer"
         >
           Mật khẩu
         </label>
@@ -181,7 +181,7 @@ export default function Register() {
             value={account.password}
             onChange={handleChange}
             placeholder="Nhập mật khẩu"
-            className="w-full py-2 outline-none border-none text-gray-500 dark:text-white bg-transparent"
+            className="w-full py-2 outline-none text-slate-700 border-none dark:text-white/90 bg-transparent"
           />
         </div>
       </div>
@@ -190,7 +190,7 @@ export default function Register() {
       <div className="mb-2">
         <label
           htmlFor="confirmPassword"
-          className="block text-sm dark:text-gray-300 mb-2 cursor-pointer"
+          className="block text-sm text-slate-900 dark:text-white/90 mb-2 cursor-pointer"
         >
           Số điện thoại
         </label>
@@ -218,7 +218,7 @@ export default function Register() {
             value={account.phone}
             onChange={handleChange}
             placeholder="Nhập số điện thoại"
-            className="w-full py-2 outline-none border-none text-gray-500 dark:text-white bg-transparent"
+            className="w-full py-2 outline-none text-slate-700 border-none dark:text-white/90 bg-transparent"
           />
         </div>
       </div>

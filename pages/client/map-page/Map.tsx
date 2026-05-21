@@ -38,7 +38,7 @@ export default function Map() {
   };
 
   return (
-    <div className="relative h-screen w-full z-1">
+    <div className="relative h-[calc(100vh-80px)] w-full z-1">
       <MapControlPanel
         baseMap={baseMap}
         setBaseMap={setBaseMap}
@@ -56,6 +56,7 @@ export default function Map() {
         className="z-0"
       >
         <TileLayer
+          className="h-full w-full"
           key={baseMap}
           url={baseMaps[baseMap as keyof typeof baseMaps].url}
           attribution={baseMaps[baseMap as keyof typeof baseMaps].attribution}
