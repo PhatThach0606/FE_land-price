@@ -1,13 +1,14 @@
 import { Input } from "@/components/Input/Input";
 import { updateProfile } from "@/features/user/profile/update";
 import { useUserStore } from "@/store/user";
+import { useEffect } from "react";
 import { toast } from "react-hot-toast";
+
 type Props = {
   form: any;
   setForm: any;
   saving: boolean;
   setSaving: any;
-  setUser: any;
 };
 
 export default function ProfileInfoForm({
@@ -15,9 +16,16 @@ export default function ProfileInfoForm({
   setForm,
   saving,
   setSaving,
-  setUser,
 }: Props) {
-  const { user } = useUserStore();
+  const { user, updateUser } = useUserStore();
+useEffect(() => {
+  if (user) {
+    setForm({
+      full_name: user.full_name || "",
+      phone: user.phone || "",
+    });
+  }
+}, [user]);
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -27,15 +35,11 @@ export default function ProfileInfoForm({
         phone: form.phone,
       });
 
-      setUser((prev: any) =>
-        prev
-          ? {
-              ...prev,
-              full_name: res?.full_name ?? prev.full_name,
-              phone: res?.phone ?? prev.phone,
-            }
-          : prev,
-      );
+      updateUser({
+        full_name: res?.full_name,
+        phone: res?.phone,
+      });
+
       toast.success("Cập nhật thành công");
     } catch (err) {
       console.error(err);
@@ -49,16 +53,24 @@ export default function ProfileInfoForm({
     <div className="mt-6 grid md:grid-cols-2 gap-4">
       <Input
         label="Họ tên"
-        value={user?.full_name}
-        onChange={(v: string) => setForm((p: any) => ({ ...p, full_name: v }))}
+        value={form?.full_name || ""}
+        onChange={(v: string) =>
+          setForm((p: any) => ({ ...p, full_name: v }))
+        }
       />
 
-      <Input label="Email" value={user?.email} disabled />
+      <Input
+        label="Email"
+        value={user?.email || ""}
+        disabled
+      />
 
       <Input
         label="Số điện thoại"
-        value={user?.phone}
-        onChange={(v: string) => setForm((p: any) => ({ ...p, phone: v }))}
+        value={form?.phone || ""}
+        onChange={(v: string) =>
+          setForm((p: any) => ({ ...p, phone: v }))
+        }
       />
 
       <div className="md:col-span-2">

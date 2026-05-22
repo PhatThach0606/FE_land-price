@@ -23,3 +23,4 @@ export const useUserStore = create<UserStore>((set) => ({
       user: state.user ? { ...state.user, ...data } : state.user,
     })),
 }));
+  
