@@ -41,7 +41,7 @@ export const getAllGiaoThong = async (params: IMapQuery) => {
       keyword: params.keyword || "",
     },
   });
-
+  console.log(res);
   return res.data.data;
 };
 export const updateGiaoThong = async (id: number, data: any) => {

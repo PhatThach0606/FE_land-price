@@ -12,11 +12,12 @@ export default function ThuaDatManagement() {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
   const [formData, setFormData] = useState({
+    so_to: "",
+    so_thua: "",
     loai_dat: "",
     dien_tich: 0,
   });
@@ -64,6 +65,8 @@ export default function ThuaDatManagement() {
   const openEdit = (item: any) => {
     setSelectedItem(item);
     setFormData({
+      so_to: item.so_to || "",
+      so_thua: item.so_thua || "",
       loai_dat: item.loai_dat || "",
       dien_tich: item.dien_tich || 0,
     });
@@ -120,9 +123,14 @@ export default function ThuaDatManagement() {
           <div>
             <label className="text-sm text-gray-400">Số tờ</label>
             <input
-              value={selectedItem?.so_to || ""}
-              disabled
-              className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-400 cursor-not-allowed"
+              value={formData.so_to}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  so_to: e.target.value,
+                })
+              }
+              className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-indigo-500 focus:outline-none"
             />
           </div>
 
@@ -130,9 +138,14 @@ export default function ThuaDatManagement() {
           <div>
             <label className="text-sm text-gray-400">Số thửa</label>
             <input
-              value={selectedItem?.so_thua || ""}
-              disabled
-              className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-400 cursor-not-allowed"
+              value={formData.so_thua}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  so_thua: e.target.value,
+                })
+              }
+              className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-indigo-500 focus:outline-none"
             />
           </div>
 

@@ -1,39 +1,57 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
+
 import { GeoJSON } from "react-leaflet";
-import { getMap } from "@/features/client/map/get.BenThanh";
+
 import React from "react";
+
+import { getMap } from "@/features/client/map/get.BenThanh";
+
+import { landStyle, roadStyle } from "@/components/map/utils/mapStyle";
+
 import { onEachFeature } from "@/components/MapClickHandler/MapClickHandler";
-function BenThanh() {
+
+type Props = {
+  styleSettings: any;
+};
+
+function BenThanh({ styleSettings }: Props) {
   const [data, setData] = useState<any>(null);
 
+  const geoJsonRef = useRef<any>(null);
+
   useEffect(() => {
-    getMap()
-      .then(setData)
-      .catch((err) => console.error(err));
+    getMap().then(setData).catch(console.error);
   }, []);
-  const geoStyle = useMemo(
-    () => ({
-      color: "#1A1A1B",
-      fillColor: "#F4A7B9",
-      weight: 0.2,
-      fillOpacity: 0.25,
-    }),
-    [],
-  );
+
+  // UPDATE STYLE REALTIME
+  useEffect(() => {
+    if (!geoJsonRef.current) return;
+
+    geoJsonRef.current.eachLayer((layer: any) => {
+      const feature = layer.feature;
+
+      const type = feature?.properties?.type;
+
+      const loaiDat = feature?.properties?.loai_dat;
+
+      if (type === "road") {
+        layer.setStyle(roadStyle.default(loaiDat, styleSettings));
+      } else {
+        layer.setStyle(landStyle.default(loaiDat, styleSettings));
+      }
+    });
+  }, [styleSettings]);
+
   if (!data) return null;
 
   return (
-    <>
-      {data && (
-        <GeoJSON
-          key={data ? "loaded" : "loading"}
-          data={data.data}
-          style={geoStyle}
-          onEachFeature={onEachFeature}
-        />
-      )}
-    </>
+    <GeoJSON
+      ref={geoJsonRef}
+      data={data.data}
+      onEachFeature={onEachFeature(styleSettings)}
+    />
   );
 }
 

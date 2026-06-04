@@ -12,11 +12,11 @@ import {
 // ================= TYPE =================
 
 export interface GiaoThong {
-  gid: number | string;
+  id: number | string;
   ten_duong: string;
   doan_duong: string;
   odt: number;
-  tmv: number;
+  tmd: number;
   skc: number;
 }
 
@@ -39,7 +39,7 @@ const TableRow = memo(
     <tr className="hover:bg-indigo-500/[0.03] transition-all group">
       {/* ID */}
       <td className="px-4 py-3 text-[11px] font-mono text-slate-600">
-        #{item.gid}
+        #{item.id}
       </td>
 
       {/* Tên đường */}
@@ -65,7 +65,7 @@ const TableRow = memo(
 
       {/* TMV */}
       <td className="px-4 py-3 text-right">
-        <Price value={item.tmv} color="text-yellow-400" />
+        <Price value={item.tmd} color="text-yellow-400" />
       </td>
 
       {/* SKC */}
@@ -127,7 +127,7 @@ export default function GiaoThongTable({ data, isLoading, onEdit }: Props) {
               </th>
 
               <th className="w-[15%] px-4 py-3 text-[10px] font-bold text-yellow-400 uppercase tracking-widest text-right">
-                TMV
+                TMD
               </th>
 
               <th className="w-[15%] px-4 py-3 text-[10px] font-bold text-cyan-400 uppercase tracking-widest text-right">
@@ -152,7 +152,7 @@ export default function GiaoThongTable({ data, isLoading, onEdit }: Props) {
               </tr>
             ) : data.length > 0 ? (
               data.map((item) => (
-                <TableRow key={item.gid} item={item} onEdit={onEdit} />
+                <TableRow key={item.id} item={item} onEdit={onEdit} />
               ))
             ) : (
               <tr>

@@ -10,8 +10,8 @@ import {
 // Định nghĩa Interface rõ ràng thay vì dùng 'any' để tránh lỗi runtime
 export interface ThuaDat {
   gid: number | string;
-  so_to: string | number;
-  so_thua: string | number;
+  so_to: number;
+  so_thua: number;
   loai_dat: string;
   dien_tich: number;
 }

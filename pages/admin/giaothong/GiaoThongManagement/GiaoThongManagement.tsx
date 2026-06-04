@@ -16,8 +16,9 @@ export default function GiaoThongManagement() {
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [formData, setFormData] = useState({
     ten_duong: "",
+    doan_duong: "",
     odt: 0,
-    tmv: 0,
+    tmd: 0,
     skc: 0,
   });
 
@@ -62,7 +63,7 @@ export default function GiaoThongManagement() {
     if (!selectedItem) return;
 
     try {
-      await updateGiaoThong(selectedItem.gid, formData);
+      await updateGiaoThong(selectedItem.id, formData);
       toast.success("Cập nhật thành công!");
       setIsUpdateModalOpen(false);
       fetchData();
@@ -77,8 +78,9 @@ export default function GiaoThongManagement() {
     setSelectedItem(item);
     setFormData({
       ten_duong: item.ten_duong || "",
+      doan_duong: item.doan_duong || "",
       odt: item.odt || 0,
-      tmv: item.tmv || 0,
+      tmd: item.tmd || 0,
       skc: item.skc || 0,
     });
     setIsUpdateModalOpen(true);
@@ -93,7 +95,7 @@ export default function GiaoThongManagement() {
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 px-4 sm:px-0 gap-4">
           <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">
-              Quản lý giao thông
+              Quản lý Bảng Giá Đất
             </h1>
             <p className="text-sm text-gray-400">
               Danh sách tuyến đường và giá đất
@@ -139,13 +141,18 @@ export default function GiaoThongManagement() {
             />
           </div>
 
-          {/* Đoạn đường (readonly) */}
+          {/* Đoạn đường */}
           <div>
             <label className="text-sm text-gray-400">Đoạn đường</label>
             <input
-              value={selectedItem?.doan_duong || ""}
-              disabled
-              className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-400"
+              value={formData?.doan_duong || ""}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  doan_duong: e.target.value,
+                })
+              }
+              className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
             />
           </div>
 
@@ -167,14 +174,14 @@ export default function GiaoThongManagement() {
 
           {/* TMV */}
           <div>
-            <label className="text-sm text-yellow-400">Giá TMV</label>
+            <label className="text-sm text-yellow-400">Giá TMD</label>
             <input
               type="number"
-              value={formData.tmv}
+              value={formData.tmd}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  tmv: Number(e.target.value),
+                  tmd: Number(e.target.value),
                 })
               }
               className="w-full mt-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"

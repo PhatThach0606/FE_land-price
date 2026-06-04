@@ -6,9 +6,11 @@ import { GeoJSON } from "react-leaflet";
 
 import React from "react";
 
-import { getTraffic } from "@/features/client/map/get.Traffic";
+import { getTrafficLogic } from "@/features/client/map/get.Traffic";
 
 import { roadStyle } from "@/components/map/utils/mapStyle";
+
+import { onEachFeature } from "@/components/MapClickHandler/MapClickHandler";
 
 type Props = {
   styleSettings: {
@@ -23,11 +25,11 @@ type Props = {
   };
 };
 
-function Traffic({ styleSettings }: Props) {
+function TrafficLogic({ styleSettings }: Props) {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    getTraffic().then(setData).catch(console.error);
+    getTrafficLogic().then(setData).catch(console.error);
   }, []);
 
   if (!data) return null;
@@ -35,12 +37,14 @@ function Traffic({ styleSettings }: Props) {
   return (
     <GeoJSON
       data={data.data}
-      interactive={false} // 🔥 QUAN TRỌNG
-      style={(feature: any) => {
-        const loaiDat = feature?.properties?.loai_dat;
-        return roadStyle.default(loaiDat, styleSettings);
+      style={{
+        opacity: 0,
+        fillOpacity: 0,
+        weight: 10, // 🔥 vùng click
       }}
+      onEachFeature={onEachFeature(styleSettings)}
     />
   );
 }
-export default React.memo(Traffic);
+
+export default React.memo(TrafficLogic);
