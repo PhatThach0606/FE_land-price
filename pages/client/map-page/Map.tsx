@@ -1,8 +1,6 @@
 "use client";
-
 import { useMemo, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-
 import BenThanh from "./BenThanh";
 import Traffic from "./Traffic";
 import TrafficLogic from "./Traffic_Logic";
@@ -30,7 +28,6 @@ const baseMaps = {
 
 export default function Map() {
   const [baseMap, setBaseMap] = useState("google");
-
   const [layers, setLayers] = useState({
     benThanh: true,
     trafficLogic: true,

@@ -1,30 +1,20 @@
 import { getInfoLand } from "@/features/client/map/getInfo";
 import { formatMoney, formatArea, formatMoneyShort } from "./../utils/format";
-
 export const handleLandClick = async (layer: any, e: any) => {
   const { lat, lng } = e.latlng;
-
   layer.bindPopup("Đang tải dữ liệu...").openPopup();
-
   try {
     const res = await getInfoLand(lat, lng);
     if (!res?.features?.length) {
       layer.bindPopup("Không có dữ liệu").openPopup();
       return;
     }
-
     const props = res.features[0].properties;
-
     const landTypeMap: Record<string, string> = {
       ODT: "Đất ở tại đô thị",
-      ONT: "Đất ở tại nông thôn",
       TMD: "Đất thương mại, dịch vụ",
-      TMV: "Đất thương mại, dịch vụ",
       SKC: "Đất cơ sở sản xuất phi nông nghiệp",
-      CLN: "Đất trồng cây lâu năm",
-      HNK: "Đất trồng cây hàng năm khác",
     };
-
     const maDat = props?.loai_dat || "---";
     const tenLoaiDat =
       landTypeMap[maDat.toUpperCase()] || "Chưa phân loại cụ thể";
@@ -33,7 +23,6 @@ export const handleLandClick = async (layer: any, e: any) => {
       props?.tuyen_duong_tinh_gia?.ten_duong_chinh || "Chưa xác định";
     const vtNum = Number(props?.vi_tri || 1);
 
-    // Chuyển đổi hệ số sang định dạng % giống cấu trúc Thông tư quản lý đất đai
     const percentMap: Record<number, string> = {
       1: "100%",
       2: "50%",
@@ -41,8 +30,6 @@ export const handleLandClick = async (layer: any, e: any) => {
       4: "32%",
     };
     const phanTramApDung = percentMap[vtNum] || "100%";
-
-    // Render HTML dạng 2 cột ngang rộng rãi w-[580px]
     const popup = `
 <div class="w-[580px] overflow-hidden rounded-2xl shadow-2xl bg-white border border-slate-200 font-sans text-slate-800">
   <div class="bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-3.5">
@@ -120,7 +107,7 @@ export const handleLandClick = async (layer: any, e: any) => {
           <span class="text-slate-500 font-semibold">Hệ số áp dụng:</span>
           <span class="font-bold text-amber-600 font-mono bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded">${hienThiViTri(phanTramApDung)}</span>
         </div>
-        <div class="flex justify-between items-center pb-0.5">
+        <div cnlass="flex justify-between items-center pb-0.5">
           <span class="text-slate-500 font-semibold">Độ sâu hành lang hẻm ướt tính:</span>
           <span class="font-bold text-slate-700 font-mono">${props?.do_sau_tinh_toan_m ? Number(props.do_sau_tinh_toan_m).toFixed(1) : "0"} m</span>
         </div>
