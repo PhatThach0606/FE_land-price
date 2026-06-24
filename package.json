@@ -13,11 +13,8 @@
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^3.0.5",
     "@hookform/resolvers": "^5.2.2",
-<<<<<<< HEAD
     "@turf/turf": "^7.3.5",
-=======
     "@nextui-org/react": "^2.6.11",
->>>>>>> b8478848555d6b58f5a93803c9884a639dee3287
     "animate.css": "^4.1.1",
     "axios": "^1.13.6",
     "flowbite": "^4.0.1",
